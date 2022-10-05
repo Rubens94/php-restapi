@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 30-09-2022 a las 01:26:30
+-- Servidor: localhost
+-- Tiempo de generación: 05-10-2022 a las 20:46:10
 -- Versión del servidor: 5.7.36
--- Versión de PHP: 7.4.26
+-- Versión de PHP: 8.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,35 +18,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `nftmarketplace`
+-- Base de datos: `prueba` 
 --
-CREATE DATABASE IF NOT EXISTS `nftmarketplace` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `nftmarketplace`;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `collections`
---
-
-DROP TABLE IF EXISTS `collections`;
-CREATE TABLE IF NOT EXISTS `collections` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(200) NOT NULL,
-  `Description` varchar(500) NOT NULL,
-  `IDblockchain` int(10) NOT NULL COMMENT 'Id de blockchain, Pej. BSC: 56',
-  `ContractAddress` varchar(100) NOT NULL,
-  `Type` varchar(10) NOT NULL COMMENT 'ERC721 ó ERC1155',
-  `addtimestamp` timestamp NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='Tabla de colecciones de NFTS';
-
---
--- Volcado de datos para la tabla `collections`
---
-
-INSERT INTO `collections` (`ID`, `Name`, `Description`, `IDblockchain`, `ContractAddress`, `Type`, `addtimestamp`) VALUES
-(1, 'Rocky Neko Halloween NFT', 'Halloween NFTs for Rocky NeKo project in Polygon Blockchain with 10,000 unique tickets for the new NFT Lottery.', 137, '0x436231D285Ad1A9E02131C603eC4530b6c4ec6e1', 'ERC1155', '2022-09-30 01:05:31');
 
 -- --------------------------------------------------------
 
@@ -54,9 +27,8 @@ INSERT INTO `collections` (`ID`, `Name`, `Description`, `IDblockchain`, `Contrac
 -- Estructura de tabla para la tabla `lazynfts`
 --
 
-DROP TABLE IF EXISTS `lazynfts`;
-CREATE TABLE IF NOT EXISTS `lazynfts` (
-  `NFTid` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `lazynfts` (
+  `NFTid` int(11) NOT NULL,
   `idcollection` int(11) NOT NULL,
   `NFTDescription` varchar(500) NOT NULL,
   `TicketNumber` int(11) NOT NULL COMMENT '# ticket para sorteo',
@@ -66,17 +38,42 @@ CREATE TABLE IF NOT EXISTS `lazynfts` (
   `Minted` tinyint(1) NOT NULL DEFAULT '0',
   `OwnerAddress` varchar(100) DEFAULT NULL,
   `TxnHash` varchar(100) DEFAULT NULL COMMENT 'Transaction Hash',
-  `TimeStampMinted` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`NFTid`),
-  KEY `collectionFK` (`idcollection`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='Tabla para almacenar NFTs potenaicales de minteo';
+  `TimeStampMinted` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Tabla para almacenar NFTs potenaicales de minteo';
 
 --
 -- Volcado de datos para la tabla `lazynfts`
 --
 
 INSERT INTO `lazynfts` (`NFTid`, `idcollection`, `NFTDescription`, `TicketNumber`, `ImagePreview`, `ImageHD`, `Attributes`, `Minted`, `OwnerAddress`, `TxnHash`, `TimeStampMinted`) VALUES
-(1, 1, 'Rocky Neko Ticket #500', 500, 'https://rockyneko.rocks/NFTrep/prev/img787j67dsj52gwDyhlm.png', 'https://rockyneko.rocks/NFTrep/HD/imgHDk893rgnb5689RfXz3208l.png', '{\"hat\": \"Pumpkin\", \"Head\": \"Grey\", \"body\": \"Orange\", \"eyes\": \"Green\", \"lenses\": \"No\", \"costume\": \"Dracula\", \"expression\": \"Amazed\"}', 0, NULL, NULL, NULL);
+(1, 1, 'Rocky Neko Ticket #500', 500, 'https://rockyneko.rocks/NFTrep/prev/img787j67dsj52gwDyhlm.png', 'https://rockyneko.rocks/NFTrep/HD/imgHDk893rgnb5689RfXz3208l.png', '{\"Eyes\": \"Bored\", \"Hats\": \"Casual\", \"Mouths\": \"Tongue\", \"Others\": \"Tie\", \"Glasses\": \"Oval\", \"Clothing\": \"Vest\"}', 0, NULL, NULL, NULL),
+(11, 1, 'Rocky Neko Ticket #500', 500, 'https://rockyneko.rocks/NFTrep/prev/img787j67dsj52gwDyhlm.png', 'https://rockyneko.rocks/NFTrep/HD/imgHDk893rgnb5689RfXz3208l.png', '{\"Eyes\": \"Bored\", \"Hats\": \"Pirate\", \"Mouths\": \"Teeth\", \"Others\": \"Tie\", \"Glasses\": \"Oval\", \"Clothing\": \"Vest\"}', 0, NULL, NULL, NULL),
+(12, 1, 'Rocky Neko Ticket #500', 500, 'https://rockyneko.rocks/NFTrep/prev/img787j67dsj52gwDyhlm.png', 'https://rockyneko.rocks/NFTrep/HD/imgHDk893rgnb5689RfXz3208l.png', '{\"Eyes\": \"Bored\", \"Hats\": \"Casual\", \"Mouths\": \"Tongue\", \"Others\": \"Bow\", \"Glasses\": \"Oval\", \"Clothing\": \"Vest\"}', 0, NULL, NULL, NULL),
+(13, 1, 'Rocky Neko Ticket #500', 500, 'https://rockyneko.rocks/NFTrep/prev/img787j67dsj52gwDyhlm.png', 'https://rockyneko.rocks/NFTrep/HD/imgHDk893rgnb5689RfXz3208l.png', '{\"Eyes\": \"Bored\", \"Hats\": \"Casual\", \"Mouths\": \"Tongue\", \"Others\": \"Bow\", \"Glasses\": \"Oval\", \"Clothing\": \"Vest\"}', 0, NULL, NULL, NULL),
+(14, 1, 'Rocky Neko Ticket #500', 500, 'https://rockyneko.rocks/NFTrep/prev/img787j67dsj52gwDyhlm.png', 'https://rockyneko.rocks/NFTrep/HD/imgHDk893rgnb5689RfXz3208l.png', '{\"Eyes\": \"Bored\", \"Hats\": \"Casual\", \"Mouths\": \"Tongue\", \"Others\": \"Bow\", \"Glasses\": \"Oval\", \"Clothing\": \"Vest\"}', 0, NULL, NULL, NULL),
+(15, 1, 'Rocky Neko Ticket #500', 500, 'https://rockyneko.rocks/NFTrep/prev/img787j67dsj52gwDyhlm.png', 'https://rockyneko.rocks/NFTrep/HD/imgHDk893rgnb5689RfXz3208l.png', '{\"Eyes\": \"Bored\", \"Hats\": \"Casual\", \"Mouths\": \"Tongue\", \"Others\": \"Bow\", \"Glasses\": \"Oval\", \"Clothing\": \"Vest\"}', 0, NULL, NULL, NULL);
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `lazynfts`
+--
+ALTER TABLE `lazynfts`
+  ADD PRIMARY KEY (`NFTid`),
+  ADD KEY `collectionFK` (`idcollection`),
+  ADD KEY `TicketNumber` (`TicketNumber`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `lazynfts`
+--
+ALTER TABLE `lazynfts`
+  MODIFY `NFTid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Restricciones para tablas volcadas
