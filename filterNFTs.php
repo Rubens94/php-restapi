@@ -180,6 +180,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
     }
 
     header("HTTP/1.1 200 OK");
-    $array = array($query, $pages, $total, $back, $next, $sql->fetchAll());
+    $array = array($pages, $total, $back, $next, $sql->fetchAll());
     echo json_encode($array);
 }
