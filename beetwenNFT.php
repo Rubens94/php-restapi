@@ -11,7 +11,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 $dbConn =  connect($db);
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET')
+if ($_SERVER['REQUEST_METHOD'] == 'GET') 
 {
     if(isset($_GET['start']) and isset($_GET['end'])){ 
         $prdouctsPerPage = 100;
