@@ -6,7 +6,7 @@ header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 header("Allow: GET, POST, OPTIONS, PUT, DELETE");
-$method = $_SERVER['REQUEST_METHOD']; 
+$method = $_SERVER['REQUEST_METHOD'];
 
 $dbConn =  connect($db);
 
@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
     $data = $body['attributes'];
     $prdouctsPerPage = 100;
     $page = $_GET['page'];
+    $order = $_GET['order'];
     $ofset = ($page - 1) * $prdouctsPerPage;
     $query = "SELECT * FROM lazynfts a INNER JOIN collections b ON a.idcollection=b.ID WHERE ";
 
@@ -120,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
     $query .= $queryClothing;
     $query .= $queryOthers;
 
-    $query .= " AND a.Minted = 0 LIMIT $prdouctsPerPage OFFSET $ofset";
+    $query .= " AND a.Minted = 0 ORDER BY a.TicketNumber $order LIMIT $prdouctsPerPage OFFSET $ofset";
 
     $sentence = $query;
     $search = " WHERE  AND ";
@@ -163,11 +164,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
 
     $back = array();
     $next = array();
-    $back['back'] = 'http://localhost/apirest/filterNFTs.php?page=' . $page - 1;
-    $next['next'] = 'http://localhost/apirest/filterNFTs.php?page=' . $page + 1;
+    $back['back'] = 'http://localhost/apirest/filterNFTs.php?page=' . $page - 1 . '&order=' . $order;
+    $next['next'] = 'http://localhost/apirest/filterNFTs.php?page=' . $page + 1 . '&order=' . $order;
 
     if($page <= 1) {
-        $back['back'] = 'http://localhost/apirest/filterNFTs.php?page=1';
+        $back['back'] = 'http://localhost/apirest/filterNFTs.php?page=1&order=asc';
     }
 
     if($pages['pages'] == 0) {
@@ -175,10 +176,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
     }
 
     if($page >= $pages['pages'] ) {
-        $next['next'] = 'http://localhost/apirest/filterNFTs.php?page=' . $pages['pages'];
+        $next['next'] = 'http://localhost/apirest/filterNFTs.php?page=' . $pages['pages'] . '&order=' . $order;
     }
 
     header("HTTP/1.1 200 OK");
-    $array = array($pages, $total, $back, $next, $sql->fetchAll());
+    $array = array($query, $pages, $total, $back, $next, $sql->fetchAll());
     echo json_encode($array);
 }
