@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
       $sql->bindValue(':id', $_GET['id']);
       $sql->execute();
       header("HTTP/1.1 200 OK");
-      echo json_encode(  $sql->fetch(PDO::FETCH_ASSOC)  );
+      echo json_encode(  $sql->fetch(PDO::FETCH_ASSOC), JSON_UNESCAPED_SLASHES  );
       exit();
 	  }
     elseif (isset($_GET['page'])) {
@@ -62,8 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
     }
 
     header("HTTP/1.1 200 OK");
-    $array = array($pages, $total, $back, $next, $sql->fetchAll());
-    echo json_encode($array);
+    $array = array($pages, $total, $back, $next, $sql->fetchAll(PDO::FETCH_ASSOC));
+    echo json_encode($array, JSON_UNESCAPED_SLASHES);
 
     exit();
 	}

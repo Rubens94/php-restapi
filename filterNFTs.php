@@ -18,6 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
     $page = $_GET['page'];
     $order = $_GET['order'];
     $ofset = ($page - 1) * $prdouctsPerPage;
+    $start = $_GET['start'];
+    $end = $_GET['end'];
     $query = "SELECT * FROM lazynfts a INNER JOIN collections b ON a.idcollection=b.ID WHERE ";
 
     $eyes = array();
@@ -138,6 +140,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
     $replace3 = "AND";
     $query = str_replace($search3, $replace3, $sentence3);
 
+    $sentence4 = $query;
+    $search4 = "WHERE";
+    $replace4 = "WHERE a.NFTid BETWEEN $start AND $end AND ";
+    $query = str_replace($search4, $replace4, $sentence4);
+
     $sql = $dbConn->prepare($query);
     $sql->execute();
     $sql->setFetchMode(PDO::FETCH_ASSOC);
@@ -180,6 +187,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
     }
 
     header("HTTP/1.1 200 OK");
-    $array = array($pages, $total, $back, $next, $sql->fetchAll());
-    echo json_encode($array);
+    $array = array($pages, $total, $back, $next, $sql->fetchAll(PDO::FETCH_ASSOC));
+    echo json_encode($array, JSON_UNESCAPED_SLASHES);
 }
