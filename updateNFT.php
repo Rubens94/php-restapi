@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT')
     $OwnerAddress = filter_var($data['OwnerAddress'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $TxnHash = filter_var($data['TxnHash'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $TimeStampMinted = filter_var($data['TimeStampMinted'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $query = "UPDATE lazynfts SET OwnerAddress=" . "'" . $OwnerAddress . "', TxnHash=" . "'" .$TxnHash . "', TimeStampMinted=" . "'" . $TimeStampMinted . "' WHERE NFTid=$id AND Minted = 0";
+    $query = "UPDATE lazynfts SET Minted = 1, OwnerAddress=" . "'" . $OwnerAddress . "', TxnHash=" . "'" .$TxnHash . "', TimeStampMinted=" . "'" . $TimeStampMinted . "' WHERE NFTid=$id AND Minted = 0";
     
     $sql = $dbConn->prepare($query);
     $sql->execute();
