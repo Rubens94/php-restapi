@@ -1,6 +1,6 @@
-# API REST - PHP
+# API REST - PHP 8.1.0
 
-### crear DB en Mysql y con PHPMyAdmin importar el archivo nftmarketplace.sql
+### crear DB en Mysql y con PHPMyAdmin importar el archivo nftmarketplaceV20.sql
 
 ### Entrar al archivo config.php para configurar los datos de la BD
 
