@@ -18,35 +18,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
     $page = $_GET['page'];
     $order = $_GET['order'];
     $ofset = ($page - 1) * $prdouctsPerPage;
+    $start = $_GET['start'];
+    $end = $_GET['end'];
     $query = "SELECT * FROM lazynfts a INNER JOIN collections b ON a.idcollection=b.ID WHERE ";
 
     $eyes = array();
-    $mouths = array();
-    $hats = array();
+    $mouth = array();
+    $hat = array();
     $glasses = array();
     $clothing = array();
-    $others = array();
+    $ears = array();
+    $jacket = array();
+    $rarity = array();
+    $background = array();
+    $accessories = array();
 
-    $queryHats = "";
+    $queryHat = "";
     $queryEyes ="";
-    $queryMouths = "";
+    $queryMouth = "";
     $queryGlasses = "";
     $queryClothing = "";
-    $queryOthers = "";
+    $queryEars = "";
+    $queryJacket ="";
+    $queryRarity ="";
+    $queryBackground ="";
+    $queryAccessories="";
 
     for($j = 0; $j <= count($data)-1; $j++){
         if(array_keys($data[$j]) == ["Eyes"]){
             $eyes[] = array_keys($data[$j]);
-        } elseif(array_keys($data[$j]) == ["Mouths"]){
-            $mouths[] = array_keys($data[$j]);
-        } elseif(array_keys($data[$j]) == ["Hats"]){
-            $hats[] = array_keys($data[$j]);
+        } elseif(array_keys($data[$j]) == ["Mouth"]){
+            $mouth[] = array_keys($data[$j]);
+        } elseif(array_keys($data[$j]) == ["Hat"]){
+            $hat[] = array_keys($data[$j]);
         } elseif(array_keys($data[$j]) == ["Glasses"]){
             $glasses[] = array_keys($data[$j]);
         } elseif(array_keys($data[$j]) == ["Clothing"]){
             $clothing[] = array_keys($data[$j]);
-        } elseif(array_keys($data[$j]) == ["Others"]){
-            $others[] = array_keys($data[$j]);
+        } elseif(array_keys($data[$j]) == ["Ears"]){
+            $ears[] = array_keys($data[$j]);
+        } elseif(array_keys($data[$j]) == ["Jacket"]){
+            $jacket[] = array_keys($data[$j]); 
+        } elseif(array_keys($data[$j]) == ["Rarity"]){
+            $rarity[] = array_keys($data[$j]); 
+        } elseif(array_keys($data[$j]) == ["Background"]){
+            $background[] = array_keys($data[$j]); 
+        } elseif(array_keys($data[$j]) == ["Accessories"]){
+            $accessories[] = array_keys($data[$j]); 
         }
     }
 
@@ -61,26 +79,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
             $search = ") OR AND (a.Attributes->'$.Eyes'";
             $replace = " OR a.Attributes->'$.Eyes'";
             $queryEyes = str_replace($search, $replace, $sentence);
-        } elseif(array_keys($data[$k]) == ["Hats"]){
-            if(count($hats) == 1){
-                $queryHats .= " AND (a.Attributes->'$.Hats' = '".$data[$k]['Hats']. "')";
-            } elseif(count($hats) >= 2){
-                $queryHats .= " AND (a.Attributes->'$.Hats' = '".$data[$k]['Hats']. "') OR";
+        } elseif(array_keys($data[$k]) == ["Hat"]){
+            if(count($hat) == 1){
+                $queryHat .= " AND (a.Attributes->'$.Hat' = '".$data[$k]['Hat']. "')";
+            } elseif(count($hat) >= 2){
+                $queryHat .= " AND (a.Attributes->'$.Hat' = '".$data[$k]['Hat']. "') OR";
             }
-            $sentence = $queryHats;
-            $search = ") OR AND (a.Attributes->'$.Hats'";
-            $replace = " OR a.Attributes->'$.Hats'";
-            $queryHats = str_replace($search, $replace, $sentence);
-        } elseif(array_keys($data[$k]) == ["Mouths"]){
-            if(count($mouths) == 1){
-                $queryMouths .= " AND (a.Attributes->'$.Mouths' = '".$data[$k]['Mouths']. "')";
-            } elseif(count($mouths) >= 2){
-                $queryMouths .= " AND (a.Attributes->'$.Mouths' = '".$data[$k]['Mouths']. "') OR";
+            $sentence = $queryHat;
+            $search = ") OR AND (a.Attributes->'$.Hat'";
+            $replace = " OR a.Attributes->'$.Hat'";
+            $queryHat = str_replace($search, $replace, $sentence);
+        } elseif(array_keys($data[$k]) == ["Mouth"]){
+            if(count($mouth) == 1){
+                $queryMouth .= " AND (a.Attributes->'$.Mouth' = '".$data[$k]['Mouth']. "')";
+            } elseif(count($mouth) >= 2){
+                $queryMouth .= " AND (a.Attributes->'$.Mouth' = '".$data[$k]['Mouth']. "') OR";
             }
-            $sentence = $queryMouths;
-            $search = ") OR AND (a.Attributes->'$.Mouths'";
-            $replace = " OR a.Attributes->'$.Mouths'";
-            $queryMouths = str_replace($search, $replace, $sentence);
+            $sentence = $queryMouth;
+            $search = ") OR AND (a.Attributes->'$.Mouth'";
+            $replace = " OR a.Attributes->'$.Mouth'";
+            $queryMouth = str_replace($search, $replace, $sentence);
         } elseif(array_keys($data[$k]) == ["Glasses"]){
             if(count($glasses) == 1){
                 $queryGlasses .= " AND (a.Attributes->'$.Glasses' = '".$data[$k]['Glasses']. "')";
@@ -101,25 +119,69 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
             $search = ") OR AND (a.Attributes->'$.Clothing'";
             $replace = " OR a.Attributes->'$.Clothing'";
             $queryClothing = str_replace($search, $replace, $sentence);
-        } elseif(array_keys($data[$k]) == ["Others"]){
-            if(count($others) == 1){
-                $queryOthers .= " AND (a.Attributes->'$.Others' = '".$data[$k]['Others']. "')";
-            } elseif(count($others) >= 2){
-                $queryOthers .= " AND (a.Attributes->'$.Others' = '".$data[$k]['Others']. "') OR";
+        } elseif(array_keys($data[$k]) == ["Ears"]){
+            if(count($ears) == 1){
+                $queryEars .= " AND (a.Attributes->'$.Ears' = '".$data[$k]['Ears']. "')";
+            } elseif(count($ears) >= 2){
+                $queryEars .= " AND (a.Attributes->'$.Ears' = '".$data[$k]['Ears']. "') OR";
             }
-            $sentence = $queryOthers;
-            $search = ") OR AND (a.Attributes->'$.Others'";
-            $replace = " OR a.Attributes->'$.Others'";
-            $queryOthers = str_replace($search, $replace, $sentence);
+            $sentence = $queryEars;
+            $search = ") OR AND (a.Attributes->'$.Ears'";
+            $replace = " OR a.Attributes->'$.Ears'";
+            $queryEars = str_replace($search, $replace, $sentence);
+        } elseif(array_keys($data[$k]) == ["Jacket"]){
+            if(count($jacket) == 1){
+                $queryJacket .= " AND (a.Attributes->'$.Jacket' = '".$data[$k]['Jacket']. "')";
+            } elseif(count($jacket) >= 2){
+                $queryJacket .= " AND (a.Attributes->'$.Jacket' = '".$data[$k]['Jacket']. "') OR";
+            }
+            $sentence = $queryJacket;
+            $search = ") OR AND (a.Attributes->'$.Jacket'";
+            $replace = " OR a.Attributes->'$.Jacket'";
+            $queryJacket = str_replace($search, $replace, $sentence);
+        } elseif(array_keys($data[$k]) == ["Rarity"]){
+            if(count($rarity) == 1){
+                $queryRarity .= " AND (a.Attributes->'$.Rarity' = '".$data[$k]['Rarity']. "')";
+            } elseif(count($rarity) >= 2){
+                $queryRarity .= " AND (a.Attributes->'$.Rarity' = '".$data[$k]['Rarity']. "') OR";
+            }
+            $sentence = $queryRarity;
+            $search = ") OR AND (a.Attributes->'$.Rarity'";
+            $replace = " OR a.Attributes->'$.Rarity'";
+            $queryRarity = str_replace($search, $replace, $sentence);
+        } elseif(array_keys($data[$k]) == ["Background"]){
+            if(count($background) == 1){
+                $queryBackground .= " AND (a.Attributes->'$.Background' = '".$data[$k]['Background']. "')";
+            } elseif(count($background) >= 2){
+                $queryBackground .= " AND (a.Attributes->'$.Background' = '".$data[$k]['Background']. "') OR";
+            }
+            $sentence = $queryBackground;
+            $search = ") OR AND (a.Attributes->'$.Background'";
+            $replace = " OR a.Attributes->'$.Background'";
+            $queryBackground = str_replace($search, $replace, $sentence);
+        } elseif(array_keys($data[$k]) == ["Accessories"]){
+            if(count($accessories) == 1){
+                $queryAccessories .= " AND (a.Attributes->'$.Accessories' = '".$data[$k]['Accessories']. "')";
+            } elseif(count($accessories) >= 2){
+                $queryAccessories .= " AND (a.Attributes->'$.Accessories' = '".$data[$k]['Accessories']. "') OR";
+            }
+            $sentence = $queryAccessories;
+            $search = ") OR AND (a.Attributes->'$.Accessories'";
+            $replace = " OR a.Attributes->'$.Accessories'";
+            $queryAccessories = str_replace($search, $replace, $sentence);
         }
     }
 
-    $query .= $queryHats;
+    $query .= $queryHat;
     $query .= $queryEyes;
-    $query .= $queryMouths;
+    $query .= $queryMouth;
     $query .= $queryGlasses;
     $query .= $queryClothing;
-    $query .= $queryOthers;
+    $query .= $queryEars;
+    $query .= $queryJacket;
+    $query .= $queryRarity;
+    $query .= $queryBackground;
+    $query .= $queryAccessories;
 
     $query .= " AND a.Minted = 0 ORDER BY a.TicketNumber $order LIMIT $prdouctsPerPage OFFSET $ofset";
 
@@ -137,6 +199,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
     $search3 = "OR AND";
     $replace3 = "AND";
     $query = str_replace($search3, $replace3, $sentence3);
+
+    $sentence4 = $query;
+    $search4 = "WHERE";
+    $replace4 = "WHERE a.NFTid BETWEEN $start AND $end AND ";
+    $query = str_replace($search4, $replace4, $sentence4);
 
     $sql = $dbConn->prepare($query);
     $sql->execute();
@@ -180,6 +247,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
     }
 
     header("HTTP/1.1 200 OK");
-    $array = array($pages, $total, $back, $next, $sql->fetchAll());
-    echo json_encode($array);
+    $array = array($pages, $total, $back, $next, $sql->fetchAll(PDO::FETCH_ASSOC));
+    echo json_encode($array, JSON_UNESCAPED_SLASHES);
 }
