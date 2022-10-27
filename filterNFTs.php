@@ -214,7 +214,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
     $replace = "SELECT count(*) AS results";
     $new_sentence = str_replace($search, $replace, $sentence);
 
-    $new_sentence2 = substr($new_sentence, 0, -19);
+    $new_sentence2 = "";
+    if($page == 1) {
+        $new_sentence2 = substr($new_sentence, 0, -19);
+    } else {
+
+        $new_sentence2 = substr($new_sentence, 0, -21);
+    }
+
 
     $results = $dbConn->prepare($new_sentence2);
     $results->execute();
